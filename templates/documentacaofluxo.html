@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Documentação de Processo{% endblock %}
+
+{% block page_title %}Documentação de Processo{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-xl shadow-2xl transition-all duration-300">
+    <h2 class="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 border-indigo-600 pb-2">Gerenciamento de Processos</h2>
+    
+    <form action="#" method="POST" class="space-y-8">
+        
+        <h3 class="text-xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2">Dados Gerais</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div>
+                <label for="numProcesso" class="block text-sm font-medium text-gray-700">Nº do Processo</label>
+                <input type="text" id="numProcesso" name="numProcesso" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="tipoOperacao" class="block text-sm font-medium text-gray-700">Tipo de Operação</label>
+                <select id="tipoOperacao" name="tipoOperacao" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                    <option value="">Selecione...</option>
+                    <option value="importacao">Em Cotação</option>
+                    <option value="exportacao">Em Andamento</option>
+                    <option value="importacao">Cancelado</option>
+                    <option value="exportacao">Faturado</option> 
+                    <option value="importacao">A Faturar - APA</option>
+                    <option value="exportacao">EM Negociação</option> 
+                    <option value="importacao">Finalizado</option>
+                    <option value="exportacao">Stand By</option>                                        
+                </select>
+            </div>
+            <div>
+                <label for="etd" class="block text-sm font-medium text-gray-700">Data de Abertura</label>
+                <input type="date" id="etd" name="etd" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="shipper" class="block text-sm font-medium text-gray-700">Gestor APA</label>
+                <input type="text" id="shipper" name="shipper" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="consignee" class="block text-sm font-medium text-gray-700">Processo</label>
+                <input type="text" id="consignee" name="consignee" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="blContainer" class="block text-sm font-medium text-gray-700">BL/Container</label>
+                <input type="text" id="blContainer" name="blContainer" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+        </div>
+
+        <h3 class="text-xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2">Faturamento e Logística</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+                <label for="portoOrigem" class="block text-sm font-medium text-gray-700">Ref Desp.</label>
+                <input type="text" id="portoOrigem" name="portoOrigem" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="portoDestino" class="block text-sm font-medium text-gray-700">Invoice</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="etd" class="block text-sm font-medium text-gray-700">Negócio</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="eta" class="block text-sm font-medium text-gray-700">Modal Frete</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="eta" class="block text-sm font-medium text-gray-700">Valor Fatura</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="eta" class="block text-sm font-medium text-gray-700">Forma de Pagamento</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="eta" class="block text-sm font-medium text-gray-700">Incoterm</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="eta" class="block text-sm font-medium text-gray-700">Free-time</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+        </div>
+
+        <h3 class="text-xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2">Informações da Mercadoria</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+                <label for="portoOrigem" class="block text-sm font-medium text-gray-700">Prod / Serviço</label>
+                <input type="text" id="portoOrigem" name="portoOrigem" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="portoDestino" class="block text-sm font-medium text-gray-700">Parceiro</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="etd" class="block text-sm font-medium text-gray-700">Mercadoria</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="eta" class="block text-sm font-medium text-gray-700">NCM</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="eta" class="block text-sm font-medium text-gray-700">Destinação</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="eta" class="block text-sm font-medium text-gray-700">Exportador</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="eta" class="block text-sm font-medium text-gray-700">Importador</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="eta" class="block text-sm font-medium text-gray-700">BL / Container</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+        </div>
+
+        <h3 class="text-xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2">Origem e Destino</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div>
+                <label for="portoOrigem" class="block text-sm font-medium text-gray-700">Porto Origem</label>
+                <input type="text" id="portoOrigem" name="portoOrigem" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="portoDestino" class="block text-sm font-medium text-gray-700">Porto Destino</label>
+                <input type="text" id="portoDestino" name="portoDestino" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="etd" class="block text-sm font-medium text-gray-700">ETD (previsão de saída do navio)</label>
+                <input type="date" id="etd" name="etd" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+           </div>
+            <div>
+                <label for="etd" class="block text-sm font-medium text-gray-700">ETA (previsão de chegada do navio)</label>
+                <input type="date" id="etd" name="etd" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+           </div>
+        
+            <h3 class="text-xl font-bold text-gray-800 border-b-2 border-gray-200 pb-2">Observações</h3>
+            <div>
+                <label for="obs" class="block text-sm font-medium text-gray-700 sr-only">Observações</label>
+                <textarea id="obs" name="obs" rows="1" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 p-3 transition-all duration-200 resize-y min-h-[100px]" placeholder="Digite aqui suas observações detalhadas sobre o processo..."></textarea>
+            </div>
+
+            <div class="flex justify-end space-x-4 mt-6">
+                <button type="button" onclick="window.location.href='{{ url_for('dashboard') }}';" class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-6 rounded-lg transition-colors duration-200 shadow-md">
+                    Cancelar
+                </button>
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200 shadow-lg">
+                    Salvar Documento
+                </button>
+            </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Controle Financeiro{% endblock %}
+
+{% block page_title %}Controle Financeiro{% endblock %}
+
+{% block content %}
+<div class="space-y-8">
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <div class="bg-green-600 text-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-sm font-semibold opacity-80">Receita Total</h3>
+                    <p class="text-3xl font-bold mt-1">R$ 5.420,00</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8v6"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8V7m0 10v1m9-5a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            <p class="text-xs mt-4 opacity-70">Inclui todas as entradas até a data.</p>
+        </div>
+
+        <div class="bg-red-600 text-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-sm font-semibold opacity-80">Despesa Total</h3>
+                    <p class="text-3xl font-bold mt-1">R$ 1.250,00</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7L13 17"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 10L16 10.01"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 10L8 10.01"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20 12a8 8 0 11-16 0 8 8 0 0116 0z"></path>
+                </svg>
+            </div>
+            <p class="text-xs mt-4 opacity-70">Custos totais no período.</p>
+        </div>
+
+        <div class="bg-indigo-600 text-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-sm font-semibold opacity-80">Lucro Líquido</h3>
+                    <p class="text-3xl font-bold mt-1">R$ 4.170,00</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.75l-6-6-4.5 4.5 9-9 9 9-4.5-4.5-6 6z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.75L12 3"></path>
+                </svg>
+            </div>
+            <p class="text-xs mt-4 opacity-70">Resultado (Receita - Despesa).</p>
+        </div>
+
+        <div class="bg-yellow-600 text-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-sm font-semibold opacity-80">Saldo a Receber</h3>
+                    <p class="text-3xl font-bold mt-1">R$ 1.500,00</p>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 13v1m0 0h3m-3 0V11m0 3a5 5 0 110-10 5 5 0 010 10z"></path>
+                </svg>
+            </div>
+            <p class="text-xs mt-4 opacity-70">Faturas em aberto.</p>
+        </div>
+
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-lg">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-gray-200 pb-2">Extrato de Movimentações</h2>
+        
+        <div class="overflow-x-auto">
+            <table class="min-w-full leading-normal">
+                <thead>
+                    <tr class="text-sm font-semibold text-gray-600 uppercase bg-gray-100">
+                        <th class="py-3 px-6 text-left rounded-tl-lg">Data</th>
+                        <th class="py-3 px-6 text-left">Descrição</th>
+                        <th class="py-3 px-6 text-right">Valor</th>
+                        <th class="py-3 px-6 text-center rounded-tr-lg">Tipo</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 text-sm font-light">
+                    
+                    <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-150">
+                        <td class="py-3 px-6 text-left whitespace-nowrap">20/08/2025</td>
+                        <td class="py-3 px-6 text-left">Venda de Serviço A</td>
+                        <td class="py-3 px-6 text-right text-green-600 font-bold">R$ 2.000,00</td>
+                        <td class="py-3 px-6 text-center">
+                            <span class="bg-green-200 text-green-800 py-1 px-3 rounded-full text-xs font-semibold">Receita</span>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-150">
+                        <td class="py-3 px-6 text-left whitespace-nowrap">19/08/2025</td>
+                        <td class="py-3 px-6 text-left">Compra de Material</td>
+                        <td class="py-3 px-6 text-right text-red-600 font-bold">R$ 1.250,00</td>
+                        <td class="py-3 px-6 text-center">
+                            <span class="bg-red-200 text-red-800 py-1 px-3 rounded-full text-xs font-semibold">Despesa</span>
+                        </td>
+                    </tr>
+
+                    <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-150">
+                        <td class="py-3 px-6 text-left whitespace-nowrap">18/08/2025</td>
+                        <td class="py-3 px-6 text-left">Venda de Serviço B</td>
+                        <td class="py-3 px-6 text-right text-green-600 font-bold">R$ 3.420,00</td>
+                        <td class="py-3 px-6 text-center">
+                            <span class="bg-green-200 text-green-800 py-1 px-3 rounded-full text-xs font-semibold">Receita</span>
+                        </td>
+                    </tr>
+                    
+                    <tr class="hover:bg-gray-50 transition duration-150">
+                        <td class="py-3 px-6 text-left whitespace-nowrap">17/08/2025</td>
+                        <td class="py-3 px-6 text-left">Salário Funcionário</td>
+                        <td class="py-3 px-6 text-right text-red-600 font-bold">R$ 3.000,00</td>
+                        <td class="py-3 px-6 text-center">
+                            <span class="bg-red-200 text-red-800 py-1 px-3 rounded-full text-xs font-semibold">Despesa</span>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

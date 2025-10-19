@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Serviços</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .form-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .input-group.full-width {
+            flex: 1 1 100%;
+        }
+
+        .input-group.half-width {
+            flex: 1 1 calc(50% - 7.5px);
+        }
+        
+        .general-form-container {
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .type-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .type-selector input[type="radio"] {
+            display: none;
+        }
+        
+        .type-selector label {
+            flex: 1 1 180px;
+            background-color: #f8f8f8;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            font-size: 0.9rem;
+        }
+        
+        .type-selector input[type="radio"]:checked + label {
+            background-color: #e6f0ff;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            padding: 10px;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .input-group.half-width {
+                flex: 1 1 100%;
+            }
+        }
+        
+        .back-link {
+            display: block;
+            text-align: left;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container general-form-container">
+        <a href="{{ url_for('dashboard') }}" class="back-link">&larr; Voltar para o Dashboard</a>
+        <h2 class="title">Cadastro de Serviços</h2>
+        <form action="#" method="post" id="form-cadastro-servico">
+            
+            <div class="form-grid">
+                <!-- Nome do serviço -->
+                <div class="input-group half-width">
+                    <label for="nome_servico">Nome do Serviço</label>
+                    <input type="text" id="nome_servico" name="nome_servico" required>
+                </div>
+
+                <!-- Código interno -->
+                <div class="input-group half-width">
+                    <label for="codigo_interno">Código Interno</label>
+                    <input type="text" id="codigo_interno" name="codigo_interno">
+                </div>
+
+                <!-- Tipo de serviço (check box mais visual) -->
+                <div class="input-group full-width">
+                    <label>Tipo de Serviço</label>
+                    <div class="type-selector">
+                        <input type="radio" id="prestado" name="tipo_servico" value="prestado" required>
+                        <label for="prestado">Prestado</label>
+                        <input type="radio" id="tomado" name="tipo_servico" value="tomado">
+                        <label for="tomado">Tomado de Terceiros</label>
+                        <input type="radio" id="ambos" name="tipo_servico" value="ambos">
+                        <label for="ambos">Ambos</label>
+                    </div>
+                </div>
+
+                <!-- Dados Fiscais -->
+                <div class="input-group half-width">
+                    <label for="dados_fiscais">Dados Fiscais</label>
+                    <input type="text" id="dados_fiscais" name="dados_fiscais">
+                </div>
+
+                <!-- Dados de Impostos -->
+                <div class="input-group half-width">
+                    <label for="dados_impostos">Dados de Impostos</label>
+                    <input type="text" id="dados_impostos" name="dados_impostos">
+                </div>
+
+                <!-- Preço e Custo (lado a lado) -->
+                <div class="input-group half-width">
+                    <label for="preco">Preço (R$)</label>
+                    <input type="number" step="0.01" id="preco" name="preco">
+                </div>
+                <div class="input-group half-width">
+                    <label for="custo">Custo (R$)</label>
+                    <input type="number" step="0.01" id="custo" name="custo">
+                </div>
+                
+                <!-- Descrição -->
+                <div class="input-group full-width">
+                    <label for="descricao_servico">Descrição</label>
+                    <textarea id="descricao_servico" name="descricao_servico"></textarea>
+                </div>
+
+                <!-- Informações Adicionais -->
+                <div class="input-group full-width">
+                    <label for="informacoes_adicionais">Informações Adicionais</label>
+                    <textarea id="informacoes_adicionais" name="informacoes_adicionais"></textarea>
+                </div>
+
+            </div>
+            
+            <button type="submit">Cadastrar Serviço</button>
+        </form>
+    </div>
+</body>
+</html>

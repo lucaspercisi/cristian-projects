@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}Contas a Pagar{% endblock %}
+
+{% block page_title %}Contas a Pagar{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-xl shadow-2xl transition-all duration-300">
+    <h2 class="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 border-indigo-600 pb-2">Lançar Contas a Pagar</h2>
+    
+    {% if sucesso %}
+        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded-md" role="alert">
+            <p>{{ sucesso }}</p>
+        </div>
+    {% endif %}
+    {% if erro %}
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded-md" role="alert">
+            <p>{{ erro }}</p>
+        </div>
+    {% endif %}
+    
+    <form action="{{ url_for('contas_a_pagar') }}" method="POST" class="space-y-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="col-span-1">
+            <label for="codigo_lancamento" class="block text-sm font-medium text-gray-700">Código do Lançamento</label>
+            <input type="number" id="codigo_lancamento" name="codigo_lancamento" 
+                class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200"
+                value="{{ proximo_codigo }}"
+                onchange="buscarLancamento(this.value)"
+                onkeydown="if(event.keyCode === 13) { event.preventDefault(); buscarLancamento(this.value); }">
+        </div>
+        
+        <div class="col-span-2 grid grid-cols-2 gap-4">
+            <div>
+                <label for="codigo_fornecedor" class="block text-sm font-medium text-gray-700">Código do Fornecedor</label>
+                <input type="text" id="codigo_fornecedor" name="codigo_fornecedor" 
+                    class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200"
+                    onchange="buscarFornecedor(this.value)">
+            </div>
+            <div>
+                <label for="nome_fornecedor" class="block text-sm font-medium text-gray-700">Nome do Fornecedor</label>
+                <input type="text" id="nome_fornecedor" name="nome_fornecedor" 
+                    class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm sm:text-sm p-2 bg-gray-100 cursor-not-allowed"
+                    readonly>
+            </div>
+        </div>
+
+        <div class="col-span-1">
+            <label for="numero_documento" class="block text-sm font-medium text-gray-700">Número do Documento</label>
+            <input type="text" id="numero_documento" name="numero_documento" 
+                class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+        </div>
+
+        <div class="col-span-2">
+            <label for="chave_nfe" class="block text-sm font-medium text-gray-700">Chave da NFe</label>
+            <input type="text" id="chave_nfe" name="chave_nfe" 
+                class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+        </div>
+        
+        <div class="col-span-1">
+            <label for="data_emissao" class="block text-sm font-medium text-gray-700">Data de Emissão</label>
+            <input type="date" id="data_emissao" name="data_emissao" 
+                class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+        </div>
+        
+        <div class="col-span-1">
+            <label for="valor_total" class="block text-sm font-medium text-gray-700">Valor Total (R$)</label>
+            <input type="number" step="0.01" id="valor_total" name="valor_total" 
+                class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+        </div>
+        
+        <div class="col-span-2">
+            <label for="condicao_pagamento" class="block text-sm font-medium text-gray-700">Condição de Pagamento</label>
+            <select id="condicao_pagamento" name="condicao_pagamento" 
+                    class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+                <option value="a_vista">À Vista</option>
+                <option value="a_prazo">À Prazo</option>
+                <option value="outros">Outros</option>
+            </select>
+        </div>
+        
+        <div class="col-span-2">
+            <label for="forma_pagamento" class="block text-sm font-medium text-gray-700">Forma de Pagamento</label>
+            <input type="text" id="forma_pagamento" name="forma_pagamento" placeholder="Ex: Boleto, Cartão, 30/60/90 dias"
+                class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+        </div>
+    </div>
+
+    <div>
+        <label for="observacoes" class="block text-sm font-medium text-gray-700">Observações</label>
+        <textarea id="observacoes" name="observacoes" rows="4" 
+                class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200"></textarea>
+    </div>
+
+    <div class="mt-6 flex justify-end">
+        <button type="submit" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-bold rounded-md shadow-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M7.707 10.293a1 1 0 010-1.414L10.586 6.5a1 1 0 111.414 1.414L9.414 10l2.586 2.586a1 1 0 01-1.414 1.414l-4.293-4.293a1 1 0 010-1.414z"/>
+                <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM10 18a8 8 0 110-16 8 8 0 010 16z"/>
+                <path d="M10 2a8 8 0 100 16 8 8 0 000-16z" clip-rule="evenodd" fill-rule="evenodd"/>
+            </svg>
+            Salvar Lançamento
+        </button>
+    </div>
+    </form>
+</div>
+
+<script>
+function buscarLancamento(codigo) {
+    if (codigo) {
+        fetch(`/buscar_conta_a_pagar?codigo=${codigo}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.encontrado) {
+                    // Preenche os campos com os dados do banco de dados
+                    document.getElementById('codigo_fornecedor').value = data.lancamento.codigo_fornecedor || '';
+                    document.getElementById('numero_documento').value = data.lancamento.numero_documento || '';
+                    document.getElementById('chave_nfe').value = data.lancamento.chave_nfe || '';
+                    document.getElementById('data_emissao').value = data.lancamento.data_emissao || '';
+                    document.getElementById('valor_total').value = data.lancamento.valor_total || '';
+                    document.getElementById('condicao_pagamento').value = data.lancamento.condicao_pagamento || '';
+                    document.getElementById('forma_pagamento').value = data.lancamento.forma_pagamento || '';
+                    document.getElementById('observacoes').value = data.lancamento.observacoes || '';
+                    
+                    // Altera o texto do botão para "Atualizar"
+                    document.querySelector('button[type="submit"]').innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                           <path d="M7.707 10.293a1 1 0 010-1.414L10.586 6.5a1 1 0 111.414 1.414L9.414 10l2.586 2.586a1 1 0 01-1.414 1.414l-4.293-4.293a1 1 0 010-1.414z"/>
+                            <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM10 18a8 8 0 110-16 8 8 0 010 16z"/>
+                        </svg>
+                        Atualizar Lançamento
+                    `;
+                } else {
+                    // Limpa os campos se o lançamento não for encontrado
+                    limparCampos();
+                }
+            })
+            .catch(error => console.error('Erro ao buscar o lançamento:', error));
+    } else {
+        // Limpa os campos se o campo de código estiver vazio
+        limparCampos();
+    }
+}
+
+function buscarFornecedor(codigo) {
+    const nomeFornecedorInput = document.getElementById('nome_fornecedor');
+    if (codigo) {
+        fetch(`/buscar_fornecedor?codigo=${codigo}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.encontrado) {
+                    nomeFornecedorInput.value = data.nome;
+                } else {
+                    nomeFornecedorInput.value = "Fornecedor não encontrado";
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao buscar fornecedor:', error);
+                nomeFornecedorInput.value = "Erro na busca";
+            });
+    } else {
+        nomeFornecedorInput.value = "";
+    }
+}
+
+function limparCampos() {
+    document.getElementById('codigo_fornecedor').value = '';
+    document.getElementById('numero_documento').value = '';
+    document.getElementById('chave_nfe').value = '';
+    document.getElementById('data_emissao').value = '';
+    document.getElementById('valor_total').value = '';
+    document.getElementById('condicao_pagamento').value = 'a_vista';
+    document.getElementById('forma_pagamento').value = '';
+    document.getElementById('observacoes').value = '';
+    document.getElementById('nome_fornecedor').value = '';
+    document.querySelector('button[type="submit"]').innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+           <path d="M7.707 10.293a1 1 0 010-1.414L10.586 6.5a1 1 0 111.414 1.414L9.414 10l2.586 2.586a1 1 0 01-1.414 1.414l-4.293-4.293a1 1 0 010-1.414z"/>
+           <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM10 18a8 8 0 110-16 8 8 0 010 16z"/>
+           <path d="M10 2a8 8 0 100 16 8 8 0 000-16z" clip-rule="evenodd" fill-rule="evenodd"/>
+        </svg>
+        Salvar Lançamento
+    `;
+}
+</script>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}Serviços Logísticos{% endblock %}
+
+{% block page_title %}Serviços Logísticos{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-xl shadow-2xl transition-all duration-300">
+    <h2 class="text-3xl font-extrabold text-gray-800 mb-8 border-b-2 border-indigo-600 pb-2">Selecione o Serviço para Acessar</h2>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <a href="{{ url_for('lista_descricao_produtos_para_registro_di') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M17 17h.01"></path>
+            </svg>
+            <span class="text-base">Lista Descrição Produtos para Registro DI</span>
+        </a>
+
+        <div class="col-span-full my-4 border-b-2 border-gray-300"></div>
+
+
+        <a href="{{ url_for('controle_processo') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
+            </svg>
+            <span class="text-base">Controle de Processo</span>
+        </a>
+
+        <div class="col-span-full my-4 border-b-2 border-gray-300">APAxxx Controle processo</div>
+
+
+        <a href="{{ url_for('check_list_processos_apacomex') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="text-base">Check-List Processos APACOMEX</span>
+        </a>
+
+        <a href="{{ url_for('check_list_processos') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="text-base">Check-List Processos</span>
+        </a>
+
+
+        <a href="{{ url_for('cotacao_frete_internacional_rodoviario') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+            <span class="text-base">Cotacao Frete Internacional Rodoviario</span>
+        </a>
+
+
+        <a href="{{ url_for('analise_fechamento_frete') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <span class="text-base">Analise e Fechamento do Frete</span>
+        </a>
+
+        <a href="{{ url_for('solicitacao_estimativa_custos') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9v2m0 0a2 2 0 11-4 0m4 0h2m-4-2v2m0 0a2 2 0 10-4 0m4 0h2m-4-2v2m0 0a2 2 0 11-4 0m4 0h2m-4-2v2m0 0a2 2 0 10-4 0m4 0h2m-4-2v2m0 0a2 2 0 11-4 0m4 0h2"></path>
+            </svg>
+            <span class="text-base">Solicitação e Estimativa de Custos</span>
+        </a>
+
+        <a href="{{ url_for('abertura_mex') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2v5a2 2 0 01-2 2H9a2 2 0 01-2-2V9a2 2 0 012-2h6zM7 11h6m-6 0h.01M17 11h.01"></path>
+            </svg>
+            <span class="text-base">Abertura Mex</span>
+        </a>
+
+        <a href="{{ url_for('lista_descricao_ncm') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h.01M7 11h.01M7 15h.01M7 19h.01M17 3h.01M17 7h.01M17 11h.01M17 15h.01M17 19h.01M12 3h.01M12 7h.01M12 11h.01M12 15h.01M12 19h.01"></path>
+            </svg>
+            <span class="text-base">Lista Descrição NCM</span>
+        </a>
+
+        <a href="{{ url_for('follow_up') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="text-base">Follow Up</span>
+        </a>
+
+
+        <div class="col-span-full my-4 border-b-2 border-gray-300">Outros Serviços</div>       <a href="{{ url_for('assessoria_cambial') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5a2 2 0 002 2 2 2 0 012 2 2 2 0 002 2v3.549m-7.864-15L16.29 11.458 10.155 19.34L8 16.963 3.055 11z"></path>
+            </svg>
+            <span class="text-base">Assessoria em importação e exportação</span>
+        </a>
+
+        <a href="{{ url_for('documentacao') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            <span class="text-base">Processo documental</span>
+        </a>
+
+        <a href="{{ url_for('cotacoes') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+            </svg>
+            <span class="text-base">Contratação de frete internacional</span>
+        </a>
+
+        <a href="{{ url_for('despacho_aduaneiro') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="text-base">Despacho aduaneiro</span>
+        </a>
+
+        <a href="{{ url_for('assessoria_cambial') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0v3m-3.5 0h7A1.5 1.5 0 0017 11.5v3A1.5 1.5 0 0115.5 16h-7A1.5 1.5 0 017 14.5v-3A1.5 1.5 0 008.5 11zm10 2h.01"></path>
+            </svg>
+            <span class="text-base">Assessoria cambial</span>
+        </a>
+
+        <a href="{{ url_for('habilitacoes_certificacoes') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-9.618 4.04A12 12 0 002.04 12v3.018a3 3 0 002.96 2.96L12 19.95l7.04-1.972a3 3 0 002.96-2.96V12a12 12 0 00-.074-1.042z"></path>
+            </svg>
+            <span class="text-base">Habilitações e certificações para importação e exportação</span>
+        </a>
+
+        <a href="{{ url_for('desenvolvimento_fornecedores') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20h5v-2a3 3 0 00-5.356-1.857"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8l-6 6M2 17l10 5 10-5M12 2l10 5-10 5-10-5 10-5z"></path>
+            </svg>
+            <span class="text-base">Desenvolvimento de fornecedores e clientes internacionais</span>
+        </a>
+
+         <a href="{{ url_for('cotacao_cambio') }}" class="flex items-center p-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium rounded-full shadow-md transition-all">
+            <svg class="w-8 h-8 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h-2m0 0l-4-4m4 4l4 4m-4-4V3m0 2c0 1.105-2.239 2-5 2s-5-.895-5-2V3a1 1 0 011-1h8a1 1 0 011 1v2c0 1.105-2.239 2-5 2zM3 21h18"></path>
+            </svg>
+            <span class="text-base">Cotação de cambio</span>
+        </a>
+
+    </div>
+</div>
+{% endblock %}

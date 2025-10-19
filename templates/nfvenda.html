@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+
+{% block title %}Emissão de Nota Fiscal de Venda{% endblock %}
+
+{% block page_title %}Emissão de Nota Fiscal de Venda (NF-e){% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-xl shadow-2xl transition-all duration-300">
+    <h2 class="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 border-indigo-600 pb-2">Gerar Nota Fiscal de Venda</h2>
+    <p class="text-sm text-gray-600 mb-6">Preencha os campos abaixo para emitir sua Nota Fiscal de Venda.</p>
+
+    <form id="nfvendaForm" method="POST" action="{{ url_for('nfvenda') }}" class="space-y-8">
+
+        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Dados do Emitente (Sua Empresa)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label for="emitente_cnpj" class="block text-sm font-medium text-gray-700">CNPJ Emitente</label>
+                    <input type="text" id="emitente_cnpj" name="emitente_cnpj" value="{{ dados_emitente.cnpj if dados_emitente else '' }}" readonly class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2 bg-gray-200 cursor-not-allowed">
+                </div>
+                <div>
+                    <label for="emitente_nome_fantasia" class="block text-sm font-medium text-gray-700">Nome Fantasia</label>
+                    <input type="text" id="emitente_nome_fantasia" name="emitente_nome_fantasia" value="{{ dados_emitente.nome_fantasia if dados_emitente else '' }}" readonly class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2 bg-gray-200 cursor-not-allowed">
+                </div>
+                <div>
+                    <label for="emitente_ie" class="block text-sm font-medium text-gray-700">Inscrição Estadual</label>
+                    <input type="text" id="emitente_ie" name="emitente_ie" value="{{ dados_emitente.ie if dados_emitente else '' }}" readonly class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2 bg-gray-200 cursor-not-allowed">
+                </div>
+            </div>
+            </div>
+
+        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Dados do Destinatário (Cliente)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                 <div>
+                    <label for="destinatario_cnpj_cpf" class="block text-sm font-medium text-gray-700">CNPJ / CPF</label>
+                    <input type="text" id="destinatario_cnpj_cpf" name="destinatario_cnpj_cpf" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div>
+                    <label for="destinatario_nome_razao" class="block text-sm font-medium text-gray-700">Nome / Razão Social</label>
+                    <input type="text" id="destinatario_nome_razao" name="destinatario_nome_razao" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div>
+                    <label for="destinatario_ie" class="block text-sm font-medium text-gray-700">Inscrição Estadual (IE)</label>
+                    <input type="text" id="destinatario_ie" name="destinatario_ie" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                <div>
+                    <label for="destinatario_logradouro" class="block text-sm font-medium text-gray-700">Logradouro</label>
+                    <input type="text" id="destinatario_logradouro" name="destinatario_logradouro" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div>
+                    <label for="destinatario_numero" class="block text-sm font-medium text-gray-700">Número</label>
+                    <input type="text" id="destinatario_numero" name="destinatario_numero" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div>
+                    <label for="destinatario_complemento" class="block text-sm font-medium text-gray-700">Complemento</label>
+                    <input type="text" id="destinatario_complemento" name="destinatario_complemento" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+            </div>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                <div>
+                    <label for="destinatario_bairro" class="block text-sm font-medium text-gray-700">Bairro</label>
+                    <input type="text" id="destinatario_bairro" name="destinatario_bairro" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div>
+                    <label for="destinatario_municipio" class="block text-sm font-medium text-gray-700">Município</label>
+                    <input type="text" id="destinatario_municipio" name="destinatario_municipio" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div>
+                    <label for="destinatario_uf" class="block text-sm font-medium text-gray-700">UF</label>
+                    <input type="text" id="destinatario_uf" name="destinatario_uf" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2 max-w-24">
+                </div>
+                 <div>
+                    <label for="destinatario_cep" class="block text-sm font-medium text-gray-700">CEP</label>
+                    <input type="text" id="destinatario_cep" name="destinatario_cep" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2 max-w-32">
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                <div>
+                    <label for="destinatario_telefone" class="block text-sm font-medium text-gray-700">Telefone</label>
+                    <input type="text" id="destinatario_telefone" name="destinatario_telefone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div>
+                    <label for="destinatario_email" class="block text-sm font-medium text-gray-700">E-mail</label>
+                    <input type="email" id="destinatario_email" name="destinatario_email" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+            </div>
+        </div>
+
+        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Itens da Nota</h3>
+            <div id="items-container" class="space-y-4">
+                <div class="item-row border border-gray-300 rounded-md p-4 bg-white grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label for="item_nome_0" class="block text-sm font-medium text-gray-700">Nome / Serviço</label>
+                        <input type="text" id="item_nome_0" name="item_nome[]" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                    </div>
+                    <div>
+                        <label for="item_codigo_0" class="block text-sm font-medium text-gray-700">Código</label>
+                        <input type="text" id="item_codigo_0" name="item_codigo[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                    </div>
+                    <div>
+                        <label for="item_quantidade_0" class="block text-sm font-medium text-gray-700">Quantidade</label>
+                        <input type="number" id="item_quantidade_0" name="item_quantidade[]" value="1" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                    </div>
+                    <div>
+                        <label for="item_valor_unitario_0" class="block text-sm font-medium text-gray-700">Valor Unitário (R$)</label>
+                        <input type="number" step="0.01" id="item_valor_unitario_0" name="item_valor_unitario[]" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                    </div>
+                    <div class="col-span-full flex justify-end">
+                         <button type="button" class="text-red-600 hover:text-red-800 font-medium text-sm" onclick="removerItem(this)">Remover Item</button>
+                    </div>
+                </div>
+            </div>
+            <button type="button" id="add-item-btn" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">Adicionar Item</button>
+        </div>
+
+        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Informações de Frete</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div>
+                    <label for="modalidade_frete" class="block text-sm font-medium text-gray-700">Modalidade Frete</label>
+                    <select id="modalidade_frete" name="modalidade_frete" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                        <option value="0">0 - Por conta do emitente</option>
+                        <option value="1">1 - Por conta do destinatário</option>
+                        <option value="2">2 - Frete por conta de terceiros</option>
+                        <option value="3">3 - Sem frete</option>
+                        <option value="4">4 - Outros</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="transportadora_nome" class="block text-sm font-medium text-gray-700">Nome da Transportadora</label>
+                    <input type="text" id="transportadora_nome" name="transportadora_nome" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                 <div>
+                    <label for="transportadora_cnpj_cpf" class="block text-sm font-medium text-gray-700">CNPJ / CPF Transportadora</label>
+                    <input type="text" id="transportadora_cnpj_cpf" name="transportadora_cnpj_cpf" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                 <div>
+                    <label for="valor_frete" class="block text-sm font-medium text-gray-700">Valor do Frete (R$)</label>
+                    <input type="number" step="0.01" id="valor_frete" name="valor_frete" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+            </div>
+             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                <div>
+                    <label for="especie_mercadoria" class="block text-sm font-medium text-gray-700">Espécie da Mercadoria</label>
+                    <input type="text" id="especie_mercadoria" name="especie_mercadoria" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div>
+                    <label for="quantidade_volumes" class="block text-sm font-medium text-gray-700">Quantidade Volumes</label>
+                    <input type="number" id="quantidade_volumes" name="quantidade_volumes" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                 <div>
+                    <label for="marca_volumes" class="block text-sm font-medium text-gray-700">Marca dos Volumes</label>
+                    <input type="text" id="marca_volumes" name="marca_volumes" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+            </div>
+        </div>
+
+        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Resumo da Nota</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label for="valor_total_produtos" class="block text-sm font-medium text-gray-700">Valor Total dos Produtos/Serviços (R$)</label>
+                    <input type="number" id="valor_total_produtos" name="valor_total_produtos" readonly class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2 bg-gray-200 cursor-not-allowed">
+                </div>
+                <div>
+                    <label for="valor_frete_total" class="block text-sm font-medium text-gray-700">Valor Total do Frete (R$)</label>
+                    <input type="number" id="valor_frete_total" name="valor_frete_total" readonly class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2 bg-gray-200 cursor-not-allowed">
+                </div>
+                <div>
+                    <label for="valor_total_nota" class="block text-sm font-medium text-gray-700">Valor Total da Nota (R$)</label>
+                    <input type="number" id="valor_total_nota" name="valor_total_nota" readonly class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2 bg-gray-200 cursor-not-allowed">
+                </div>
+            </div>
+            </div>
+
+        <div class="flex justify-end space-x-4 mt-8">
+            <button type="button" onclick="window.location.href='{{ url_for('dashboard') }}';" class="bg-gray-400 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors">
+                Cancelar
+            </button>
+            <button type="submit" class="bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+                Gerar e Transmitir NF-e
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    // ----- Lógica para adicionar/remover itens da nota -----
+    let itemIndex = 0; // Começa com um item visível, mas a lógica do JS usará itemIndex para novos itens
+
+    document.getElementById('add-item-btn').addEventListener('click', function() {
+        itemIndex++; // Incrementa o índice para cada novo item
+
+        const itemsContainer = document.getElementById('items-container');
+        const newItemRow = document.createElement('div');
+        newItemRow.classList.add('item-row', 'border', 'border-gray-300', 'rounded-md', 'p-4', 'bg-white', 'grid', 'grid-cols-1', 'md:grid-cols-4', 'gap-4', 'mt-4');
+        newItemRow.innerHTML = `
+            <div>
+                <label for="item_nome_${itemIndex}" class="block text-sm font-medium text-gray-700">Nome / Serviço</label>
+                <input type="text" id="item_nome_${itemIndex}" name="item_nome[]" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="item_codigo_${itemIndex}" class="block text-sm font-medium text-gray-700">Código</label>
+                <input type="text" id="item_codigo_${itemIndex}" name="item_codigo[]" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="item_quantidade_${itemIndex}" class="block text-sm font-medium text-gray-700">Quantidade</label>
+                <input type="number" id="item_quantidade_${itemIndex}" name="item_quantidade[]" value="1" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div>
+                <label for="item_valor_unitario_${itemIndex}" class="block text-sm font-medium text-gray-700">Valor Unitário (R$)</label>
+                <input type="number" step="0.01" id="item_valor_unitario_${itemIndex}" name="item_valor_unitario[]" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+            </div>
+            <div class="col-span-full flex justify-end">
+                 <button type="button" class="text-red-600 hover:text-red-800 font-medium text-sm" onclick="removerItem(this)">Remover Item</button>
+            </div>
+        `;
+        itemsContainer.appendChild(newItemRow);
+    });
+
+    function removerItem(button) {
+        button.closest('.item-row').remove();
+        calcularTotais(); // Recalcular totais após remover um item
+    }
+
+    // ----- Lógica para calcular totais dinamicamente -----
+    function calcularTotais() {
+        let valorTotalProdutos = 0;
+        const items = document.querySelectorAll('.item-row');
+
+        items.forEach(itemRow => {
+            const quantidadeInput = itemRow.querySelector('input[name="item_quantidade[]"]');
+            const valorUnitarioInput = itemRow.querySelector('input[name="item_valor_unitario[]"]');
+
+            const quantidade = parseFloat(quantidadeInput.value) || 0;
+            const valorUnitario = parseFloat(valorUnitarioInput.value) || 0;
+            
+            valorTotalProdutos += quantidade * valorUnitario;
+        });
+
+        document.getElementById('valor_total_produtos').value = valorTotalProdutos.toFixed(2);
+
+        // Calcular valor total da nota (total produtos + frete)
+        const valorFrete = parseFloat(document.getElementById('valor_frete').value) || 0;
+        const valorTotalNota = valorTotalProdutos + valorFrete;
+        document.getElementById('valor_frete_total').value = valorFrete.toFixed(2);
+        document.getElementById('valor_total_nota').value = valorTotalNota.toFixed(2);
+    }
+
+    // Adiciona listeners para recalcular totais quando os campos de item ou frete mudam
+    document.addEventListener('input', function(event) {
+        if (event.target.name && (event.target.name.startsWith('item_quantidade[]') || event.target.name.startsWith('item_valor_unitario[]') || event.target.name === 'valor_frete')) {
+            calcularTotais();
+        }
+    });
+
+    // Chama calcularTotais ao carregar a página para preencher valores iniciais (se houver itens pré-existentes ou valor de frete)
+    document.addEventListener('DOMContentLoaded', () => {
+        // Inicializa o contador de itens com base nos itens já visíveis
+        itemIndex = document.querySelectorAll('.item-row').length - 1;
+        calcularTotais();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+
+{% block title %}Nota Fiscal de Serviço Eletrônica (NFS-e){% endblock %}
+
+{% block page_title %}Gerar Nota Fiscal de Serviço (NFS-e){% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-xl shadow-2xl transition-all duration-300">
+    <h2 class="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 border-indigo-600 pb-2">Emitir Nota Fiscal de Serviço</h2>
+    <p class="text-sm text-gray-600 mb-6">Preencha os campos abaixo para emitir a NFS-e.</p>
+
+    <form id="nfseForm" action="{{ url_for('emitir_nfse') }}" method="POST" class="space-y-8">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 border border-gray-200 rounded-lg p-6 bg-gray-50">
+            <h3 class="col-span-full text-xl font-semibold text-gray-700 mb-4">Informações do Prestador</h3>
+            
+            <div class="form-group">
+                <label for="prestador_cnpj" class="block text-sm font-medium text-gray-700">CNPJ Prestador</label>
+                <input type="text" id="prestador_cnpj" name="prestador_cnpj" value="{{ dados_emitente.cnpj if dados_emitente else '' }}" readonly
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+            <div class="form-group">
+                <label for="prestador_nome" class="block text-sm font-medium text-gray-700">Nome/Razão Social Prestador</label>
+                <input type="text" id="prestador_nome" name="prestador_nome" value="{{ dados_emitente.razao_social if dados_emitente else '' }}" readonly
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+            <div class="form-group">
+                <label for="prestador_inscricao_municipal" class="block text-sm font-medium text-gray-700">Inscrição Municipal</label>
+                <input type="text" id="prestador_inscricao_municipal" name="prestador_inscricao_municipal" value="{{ dados_emitente.inscricao_municipal if dados_emitente else '' }}" readonly
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 border border-gray-200 rounded-lg p-6 bg-gray-50">
+            <h3 class="col-span-full text-xl font-semibold text-gray-700 mb-4">Informações do Tomador (Cliente)</h3>
+
+            <div class="form-group">
+                <label for="tomador_cpf_cnpj" class="block text-sm font-medium text-gray-700">CPF/CNPJ Tomador</label>
+                <input type="text" id="tomador_cpf_cnpj" name="tomador_cpf_cnpj" onblur="buscarTomador()"
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+            <div class="form-group">
+                <label for="tomador_nome_razao" class="block text-sm font-medium text-gray-700">Nome/Razão Social Tomador</label>
+                <input type="text" id="tomador_nome_razao" name="tomador_nome_razao" readonly
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+            <div class="form-group">
+                <label for="tomador_inscricao_municipal" class="block text-sm font-medium text-gray-700">Inscrição Municipal Tomador</label>
+                <input type="text" id="tomador_inscricao_municipal" name="tomador_inscricao_municipal" readonly
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+             <div class="form-group col-span-1 md:col-span-2 lg:col-span-1">
+                <label for="tomador_email" class="block text-sm font-medium text-gray-700">E-mail Tomador</label>
+                <input type="email" id="tomador_email" name="tomador_email"
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+        </div>
+
+        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+            <h3 class="col-span-full text-xl font-semibold text-gray-700 mb-4">Detalhes do Serviço</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="form-group col-span-1 md:col-span-2">
+                    <label for="servico_descricao" class="block text-sm font-medium text-gray-700">Descrição do Serviço</label>
+                    <textarea id="servico_descricao" name="servico_descricao" rows="4" required
+                              class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="codigo_servico" class="block text-sm font-medium text-gray-700">Código do Serviço (Tributário)</label>
+                    <input type="text" id="codigo_servico" name="codigo_servico" required
+                           class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+                </div>
+                <div class="form-group">
+                    <label for="cnae" class="block text-sm font-medium text-gray-700">CNAE</label>
+                    <input type="text" id="cnae" name="cnae"
+                           class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 border border-gray-200 rounded-lg p-6 bg-gray-50">
+            <h3 class="col-span-full text-xl font-semibold text-gray-700 mb-4">Valores e Tributos</h3>
+            
+            <div class="form-group">
+                <label for="valor_servicos" class="block text-sm font-medium text-gray-700">Valor dos Serviços</label>
+                <input type="number" step="0.01" id="valor_servicos" name="valor_servicos" required value="0.00"
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+            <div class="form-group">
+                <label for="iss_aliquota" class="block text-sm font-medium text-gray-700">Alíquota ISS (%)</label>
+                <input type="number" step="0.01" id="iss_aliquota" name="iss_aliquota" value="2.00" onblur="calcularISS()"
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+            <div class="form-group">
+                <label for="iss_valor" class="block text-sm font-medium text-gray-700">Valor ISS</label>
+                <input type="number" step="0.01" id="iss_valor" name="iss_valor" readonly
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+            <div class="form-group">
+                <label for="deducoes" class="block text-sm font-medium text-gray-700">Deduções</label>
+                <input type="number" step="0.01" id="deducoes" name="deducoes" value="0.00" onblur="calcularISS()"
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+            <div class="form-group">
+                <label for="valor_total_nfse" class="block text-sm font-medium text-gray-700">Valor Total NFS-e</label>
+                <input type="number" step="0.01" id="valor_total_nfse" name="valor_total_nfse" readonly
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+             <div class="form-group">
+                <label for="data_competencia" class="block text-sm font-medium text-gray-700">Data de Competência</label>
+                <input type="date" id="data_competencia" name="data_competencia" required
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+            <div class="form-group">
+                <label for="regime_tributario" class="block text-sm font-medium text-gray-700">Regime Tributário</label>
+                <select id="regime_tributario" name="regime_tributario"
+                        class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+                    <option value="simples_nacional">Simples Nacional</option>
+                    <option value="simples_excesso">Simples Nacional (Excesso)</option>
+                    <option value="lucro_presumido">Lucro Presumido</option>
+                    <option value="lucro_real">Lucro Real</option>
+                    <option value="isento">Isento</option>
+                    <option value="nao_tributavel">Não Tributável</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="iss_retido" class="block text-sm font-medium text-gray-700">ISS Retido?</label>
+                <select id="iss_retido" name="iss_retido" onchange="toggleCamposISS()"
+                        class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+                    <option value="true">Sim</option>
+                    <option value="false" selected>Não</option>
+                </select>
+            </div>
+            <div id="iss_retido_campos" class="hidden col-span-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                 <div class="form-group">
+                    <label for="iss_retido_cnpj" class="block text-sm font-medium text-gray-700">CNPJ Retenção ISS</label>
+                    <input type="text" id="iss_retido_cnpj" name="iss_retido_cnpj"
+                           class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+                </div>
+                <div class="form-group">
+                    <label for="iss_retido_im" class="block text-sm font-medium text-gray-700">Inscrição Municipal Retenção ISS</label>
+                    <input type="text" id="iss_retido_im" name="iss_retido_im"
+                           class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+                </div>
+            </div>
+        </div>
+
+        <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+            <h3 class="col-span-full text-xl font-semibold text-gray-700 mb-4">Observações</h3>
+            <div class="form-group col-span-full">
+                <label for="observacoes" class="block text-sm font-medium text-gray-700">Observações Gerais</label>
+                <textarea id="observacoes" name="observacoes" rows="4"
+                          class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200"></textarea>
+            </div>
+            <div class="form-group col-span-full">
+                <label for="anexos" class="block text-sm font-medium text-gray-700 mt-4">Anexos (Nome do Arquivo)</label>
+                <input type="text" id="anexos" name="anexos"
+                       class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 sm:text-sm p-2 transition-all duration-200">
+            </div>
+        </div>
+
+        <div class="flex justify-end space-x-4 mt-8">
+            <button type="button" onclick="limparCamposNfse()" class="bg-gray-400 text-white font-bold py-2 px-4 rounded-lg hover:bg-gray-500 transition-colors">
+                Limpar
+            </button>
+            <button type="submit" class="bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
+                Emitir NFS-e
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    // Mock de dados do emitente - Em um sistema real, isso viria do backend
+    // Você pode passar isso via render_template no Flask como fez anteriormente.
+    const dadosEmitenteMock = {
+        cnpj: "{{ dados_emitente.cnpj if dados_emitente else '00.000.000/0001-00' }}",
+        razao_social: "{{ dados_emitente.razao_social if dados_emitente else 'Nome da Sua Empresa Ltda.' }}",
+        inscricao_municipal: "{{ dados_emitente.inscricao_municipal if dados_emitente else '1234567' }}"
+    };
+
+    // Preenche os campos do emitente ao carregar a página (caso dados_emitente não seja passado)
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!document.getElementById('prestador_cnpj').value) {
+            document.getElementById('prestador_cnpj').value = dadosEmitenteMock.cnpj;
+            document.getElementById('prestador_nome').value = dadosEmitenteMock.razao_social;
+            document.getElementById('prestador_inscricao_municipal').value = dadosEmitenteMock.inscricao_municipal;
+        }
+        calcularISS(); // Calcula o ISS inicial com base nos valores padrão
+        toggleCamposISS(); // Verifica o estado inicial do ISS retido
+    });
+
+    function buscarTomador() {
+        const cpfCnpj = document.getElementById('tomador_cpf_cnpj').value.replace(/[^\d]/g, ''); // Remove caracteres não numéricos
+
+        if (!cpfCnpj) return;
+
+        // Em um sistema real, faria uma chamada AJAX para o backend para buscar os dados do tomador
+        // Exemplo de dados mockados para demonstração:
+        let tomadorEncontrado = null;
+        if (cpfCnpj === '00000000000000') { // CNPJ mock para exemplo
+            tomadorEncontrado = {
+                nome_razao: "Cliente Exemplo S.A.",
+                inscricao_municipal: "9876543",
+                email: "cliente.exemplo@email.com"
+            };
+        } else if (cpfCnpj === '11111111111') { // CPF mock para exemplo
+             tomadorEncontrado = {
+                nome_razao: "João da Silva",
+                inscricao_municipal: "", // Pode não ter IM
+                email: "joao.silva@email.com"
+            };
+        }
+        
+        if (tomadorEncontrado) {
+            document.getElementById('tomador_nome_razao').value = tomadorEncontrado.nome_razao;
+            document.getElementById('tomador_inscricao_municipal').value = tomadorEncontrado.inscricao_municipal;
+            document.getElementById('tomador_email').value = tomadorEncontrado.email;
+        } else {
+            alert('Tomador não encontrado. Preencha os dados manualmente.');
+            document.getElementById('tomador_nome_razao').value = '';
+            document.getElementById('tomador_inscricao_municipal').value = '';
+            document.getElementById('tomador_email').value = '';
+        }
+    }
+
+    function calcularISS() {
+        const valorServicos = parseFloat(document.getElementById('valor_servicos').value) || 0;
+        const aliquotaISS = parseFloat(document.getElementById('iss_aliquota').value) || 0;
+        const deducoes = parseFloat(document.getElementById('deducoes').value) || 0;
+
+        const valorISS = (valorServicos - deducoes) * (aliquotaISS / 100);
+        const valorTotalNFSe = valorServicos - valorISS - deducoes; // ISS retido ou não, a base do valor total é serviço - ISS - dedução
+
+        document.getElementById('iss_valor').value = valorISS.toFixed(2);
+        document.getElementById('valor_total_nfse').value = valorTotalNFSe.toFixed(2);
+    }
+
+    function toggleCamposISS() {
+        const issRetidoSelect = document.getElementById('iss_retido');
+        const issRetidoCamposDiv = document.getElementById('iss_retido_campos');
+        
+        if (issRetidoSelect.value === 'true') {
+            issRetidoCamposDiv.classList.remove('hidden');
+        } else {
+            issRetidoCamposDiv.classList.add('hidden');
+            // Limpar campos de retenção se não for retido
+            document.getElementById('iss_retido_cnpj').value = '';
+            document.getElementById('iss_retido_im').value = '';
+        }
+    }
+
+    function limparCamposNfse() {
+        document.getElementById('tomador_cpf_cnpj').value = '';
+        document.getElementById('tomador_nome_razao').value = '';
+        document.getElementById('tomador_inscricao_municipal').value = '';
+        document.getElementById('tomador_email').value = '';
+        document.getElementById('servico_descricao').value = '';
+        document.getElementById('codigo_servico').value = '';
+        document.getElementById('cnae').value = '';
+        document.getElementById('valor_servicos').value = '0.00';
+        document.getElementById('iss_aliquota').value = '2.00'; // Valor padrão
+        document.getElementById('iss_valor').value = '0.00';
+        document.getElementById('deducoes').value = '0.00';
+        document.getElementById('valor_total_nfse').value = '0.00';
+        document.getElementById('data_competencia').value = ''; // Limpa a data de competência
+        document.getElementById('regime_tributario').value = 'simples_nacional'; // Valor padrão
+        document.getElementById('iss_retido').value = 'false';
+        toggleCamposISS(); // Atualiza a visibilidade dos campos ISS retido
+        document.getElementById('observacoes').value = '';
+        document.getElementById('anexos').value = '';
+        
+        // Recalcula para garantir que os valores voltem ao padrão
+        calcularISS(); 
+    }
+
+    // Chamada inicial para configurar o estado dos campos ao carregar a página
+    document.addEventListener('DOMContentLoaded', () => {
+        calcularISS(); 
+        toggleCamposISS();
+    });
+</script>
+{% endblock %}

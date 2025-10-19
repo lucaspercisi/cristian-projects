@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard - Conecta Prime{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-300">
+    <div class="flex min-h-screen">
+        <aside class="w-64 bg-gray-800 text-white shadow-xl flex flex-col rounded-r-2xl">
+            <div class="p-6 border-b border-gray-700">
+                <h2 class="text-2xl font-bold text-center">Conecta Prime</h2>
+            </div>
+            <nav class="flex-1 px-4 py-6">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{{ url_for('dashboard') }}" class="flex items-center px-4 py-3 rounded-lg text-white hover:bg-gray-700 transition-colors duration-200">
+                            <svg class="icon w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <!-- Menu de Cadastros -->
+                        <a href="#" id="menu-cadastros" class="flex items-center px-4 py-3 rounded-lg text-white hover:bg-gray-700 transition-colors duration-200">
+                            <svg class="icon w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            </svg>
+                            Cadastros
+                            <svg class="w-4 h-4 ml-auto transform transition-transform" id="arrow-cadastros" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </a>
+                        <ul id="submenu-cadastros" class="pl-8 mt-2 space-y-2">
+                            <li class="ml-6">
+                            <a href="{{ url_for('cadastrar_geral') }}"  class="hover:text-blue-500">Geral</a>
+                            </li>
+                            <li class="ml-6">
+                            <a href="{{ url_for('cadastrar_produtos') }}" class="hover:text-blue-500">Produtos</a>
+                            </li>
+                            <li class="ml-6">
+                            <a href="{{ url_for('cadastrar_servicos') }}"  class="hover:text-blue-500">Serviços</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('financeiro') }}" id="menu-financeiro" class="flex items-center px-4 py-3 rounded-lg text-white hover:bg-gray-700 transition-colors duration-200">
+                            <svg class="icon w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 21.35l-1.92-1.74A12.03 12.03 0 0 1 2 12.02a10 10 0 0 1 10-10 10 10 0 0 1 10 10 12.03 12.03 0 0 1-8.08 7.59z"></path>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            </svg>
+                            Financeiro
+                            <svg class="w-4 h-4 ml-auto transform transition-transform" id="arrow-financeiro" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </a>
+                        <!-- Submenu Financeiro Visível por Padrão -->
+                        <ul id="submenu-financeiro" class="pl-8 mt-2 space-y-2">
+                            <li class="ml-6">
+                            <a href="{{ url_for('contas_a_pagar') }}" class="hover:text-blue-500">Contas a Pagar</a>
+                            </li>
+                            <li class="ml-6">
+                            <a href="{{ url_for('contas_a_receber') }}" class="hover:text-blue-500">Contas a Receber</a>
+                            </li>
+                            <li class="ml-6">
+                            <a href="{{ url_for('financeiro') }}" class="hover:text-blue-500">Financeiro</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                    <li>
+
+
+                    <!--    Comentado a parte de faturamento para focar no menu de logística
+
+
+                        <a href="#" id="menu-faturamento" class="flex items-center px-4 py-3 rounded-lg text-white hover:bg-gray-700 transition-colors duration-200">
+                            <svg class="icon w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 21.35l-1.92-1.74A12.03 12.03 0 0 1 2 12.02a10 10 0 0 1 10-10 10 10 0 0 1 10 10 12.03 12.03 0 0 1-8.08 7.59z"></path>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            </svg>
+                            Faturamento 
+                            <svg class="w-4 h-4 ml-auto transform transition-transform" id="arrow-faturamento" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </a>
+                        <ul id="submenu-faturamento" class="pl-8 mt-2 space-y-2">
+                            <li>
+                                <a href="{{ url_for('nfvenda') }}" class="block px-4 py-2 rounded-lg text-gray-400 hover:bg-gray-700 transition-colors duration-200">NFe Venda</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('nfse') }}" class="block px-4 py-2 rounded-lg text-gray-400 hover:bg-gray-700 transition-colors duration-200">NFS-e</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for('contrato') }}" class="block px-4 py-2 rounded-lg text-gray-400 hover:bg-gray-700 transition-colors duration-200">Contrato</a>
+                            </li>
+                        </ul>
+                    </li>   
+                    
+                    
+                    -->
+                    
+                    
+                    <li>
+                        <a href="#" id="menu-logistica" class="flex items-center px-4 py-3 rounded-lg text-white hover:bg-gray-700 transition-colors duration-200">
+                            <svg class="icon w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 21.35l-1.92-1.74A12.03 12.03 0 0 1 2 12.02a10 10 0 0 1 10-10 10 10 0 0 1 10 10 12.03 12.03 0 0 1-8.08 7.59z"></path>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            </svg>
+                            Gestão Logística
+                            <svg class="w-4 h-4 ml-auto transform transition-transform" id="arrow-logistica" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </a>
+                        <ul id="submenu-logistica" class="pl-8 mt-2 space-y-2">
+                            <!-- <li>  
+                                <a href="{{ url_for('cotacoes') }}" class="block px-4 py-2 rounded-lg text-gray-400 hover:bg-gray-700 transition-colors duration-200">Cotação Frete xx</a>
+                            </li> -->
+                            <!-- <li>
+                                <a href="{{ url_for('documentacao') }}" class="block px-4 py-2 rounded-lg text-gray-400 hover:bg-gray-700 transition-colors duration-200">Documentação xx</a>
+                            </li> -->
+                            <!--  <li>
+                                <a href="{{ url_for('lista_descricao_produtos_para_registro_di') }}" class="block px-4 py-2 rounded-lg text-gray-400 hover:bg-gray-700 transition-colors duration-200">Lista Produtos Reigstro - DI</a>
+                            </li> -->
+                           <!--   <li>
+                                <a href="{{ url_for('controle_processo') }}" class="block px-4 py-2 rounded-lg text-gray-400 hover:bg-gray-700 transition-colors duration-200">Controle de Processo</a>
+                            </li>  -->
+                            <li>
+                                <a href="{{ url_for('servico_logistico') }}" class="block px-4 py-2 rounded-lg text-gray-400 hover:bg-gray-700 transition-colors duration-200">Serviço Logístico</a>
+                            </li>
+                            <li>
+                                <a href="#" class="block px-4 py-2 rounded-lg text-gray-400 hover:bg-gray-700 transition-colors duration-200">Outra Rotina</a>
+                            </li>
+                        </ul>
+                    </li>
+                    </li>
+                   </ul>
+            </nav>
+            <div class="px-4 py-6 border-t border-gray-700">
+                <a href="{{ url_for('logout') }}" class="flex items-center px-4 py-3 rounded-lg text-red-400 hover:bg-gray-700 transition-colors duration-200">
+                    <svg class="icon w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Sair
+                </a>
+            </div>
+        </aside>
+        <main class="flex-1 p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">{% block page_title %}{% endblock %}</h1>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+
+    <script>
+        // Lógica para o novo menu de Gestão Logística
+        const logisticaLink = document.getElementById('menu-logistica');
+        const submenuLogistica = document.getElementById('submenu-logistica');
+        const arrowLogistica = document.getElementById('arrow-logistica');
+
+        logisticaLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            submenuLogistica.classList.toggle('hidden');
+            arrowLogistica.classList.toggle('rotate-180');
+        });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lógica para o menu de Cadastros
+        const cadastrosLink = document.getElementById('menu-cadastros');
+        const submenuCadastros = document.getElementById('submenu-cadastros');
+        const arrowCadastros = document.getElementById('arrow-cadastros');
+
+        cadastrosLink.addEventListener('click', function(event) {
+            event.preventDefault(); // Evita o comportamento padrão do link
+            submenuCadastros.classList.toggle('hidden');
+            arrowCadastros.classList.toggle('rotate-180');
+        });
+
+        // Lógica para o menu de Financeiro (ADICIONADO)
+        const financeiroLink = document.getElementById('menu-financeiro');
+        const submenuFinanceiro = document.getElementById('submenu-financeiro');
+        const arrowFinanceiro = document.getElementById('arrow-financeiro');
+
+        financeiroLink.addEventListener('click', function(event) {
+            event.preventDefault(); // Evita o comportamento padrão do link
+            submenuFinanceiro.classList.toggle('hidden');
+            arrowFinanceiro.classList.toggle('rotate-180');
+        });
+        // Lógica para o novo menu de Faturamento
+        const faturamentoLink = document.getElementById('menu-faturamento');
+        const submenuFaturamento = document.getElementById('submenu-faturamento');
+        const arrowFaturamento = document.getElementById('arrow-faturamento');
+
+        faturamentoLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            submenuFaturamento.classList.toggle('hidden');
+            arrowFaturamento.classList.toggle('rotate-180');
+        });
+    });
+</script>
+    <script>
+            // Seu código de menu lateral existente
+        </script>
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>
+</body>
+</html>

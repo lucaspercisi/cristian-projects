@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Cotação de Câmbio{% endblock %}
+
+{% block page_title %}Cotação de Câmbio{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-xl shadow-2xl transition-all duration-300">
+    <h2 class="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 border-indigo-600 pb-2">Cotação de Câmbio</h2>
+
+    <div class="space-y-6">
+        <div class="mb-4">
+            <label for="moeda" class="block text-lg font-medium text-gray-700 mb-2">Selecione a Moeda para a Cotação</label>
+            <div class="relative">
+                <select id="moeda"
+                        class="block w-full px-4 py-3 text-lg text-gray-800 bg-gray-50 border-2 border-gray-300 rounded-lg shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 focus:ring-opacity-50 transition-all duration-300 appearance-none">
+                    <option value="" disabled selected>Carregando moedas...</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-700">
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        
+        <div id="cotacao-display"
+             class="p-6 bg-white border border-gray-200 rounded-lg shadow-xl text-center hidden">
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Cotação de <span id="moeda-nome"></span></h3>
+            <p class="text-5xl font-extrabold text-indigo-600" id="moeda-valor">R$ 0,00</p>
+            <p class="text-sm text-gray-500 mt-1">Última atualização: <span id="moeda-data"></span></p>
+            <div class="flex justify-center mt-4 text-gray-600">
+                <p class="mr-6">Valor de Compra: <span id="moeda-compra" class="font-semibold"></span></p>
+                <p>Valor de Venda: <span id="moeda-venda" class="font-semibold"></span></p>
+            </div>
+        </div>
+
+        <div id="erro-mensagem" class="hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md" role="alert">
+            <p>Não foi possível obter a cotação. Tente novamente mais tarde.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectMoeda = document.getElementById('moeda');
+        const cotacaoDisplay = document.getElementById('cotacao-display');
+        const erroMensagem = document.getElementById('erro-mensagem');
+
+        // Função para formatar a data como dd-MM-yyyy
+        function formatarData(data) {
+            const dia = String(data.getDate()).padStart(2, '0');
+            const mes = String(data.getMonth() + 1).padStart(2, '0'); // Mês é 0-based
+            const ano = data.getFullYear();
+            return `${dia}-${mes}-${ano}`;
+        }
+        
+        // URL da API do Banco Central para obter a lista de moedas
+        const urlMoedas = 'https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/Moedas?$top=100&$orderby=nomeFormatado&$format=json';
+
+        // Função para carregar as moedas no dropdown
+        async function carregarMoedas() {
+            try {
+                const response = await fetch(urlMoedas);
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar a lista de moedas.');
+                }
+                const data = await response.json();
+                
+                selectMoeda.innerHTML = '<option value="" disabled selected>Selecione uma moeda...</option>';
+                
+                // Preenche o dropdown com as moedas da API
+                data.value.forEach(moeda => {
+                    if (moeda.simbolo != 'BRL') { // Omitir BRL, pois a cotação é sempre em relação a ele
+                        const option = document.createElement('option');
+                        option.value = moeda.simbolo;
+                        option.textContent = moeda.nomeFormatado;
+                        selectMoeda.appendChild(option);
+                    }
+                });
+                
+            } catch (error) {
+                console.error("Erro ao carregar moedas:", error);
+                selectMoeda.innerHTML = '<option value="" disabled>Erro ao carregar moedas.</option>';
+                erroMensagem.classList.remove('hidden');
+            }
+        }
+        
+        // Função para exibir a cotação da moeda selecionada
+        async function exibirCotacao(simboloMoeda) {
+            const dataAtual = formatarData(new Date());
+            const urlCotacao = `https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoMoedaDia(moeda=@moeda,dataCotacao=@dataCotacao)?@moeda='${simboloMoeda}'&@dataCotacao='${dataAtual}'&$top=1&$orderby=dataHoraCotacao%20desc&$format=json`;
+            
+            try {
+                const response = await fetch(urlCotacao);
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar a cotação da moeda.');
+                }
+                const data = await response.json();
+                
+                if (data.value && data.value.length > 0) {
+                    const cotacao = data.value[0];
+                    
+                    document.getElementById('moeda-nome').textContent = cotacao.nomeMoeda;
+                    document.getElementById('moeda-valor').textContent = parseFloat(cotacao.cotacaoVenda).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    document.getElementById('moeda-compra').textContent = parseFloat(cotacao.cotacaoCompra).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    document.getElementById('moeda-venda').textContent = parseFloat(cotacao.cotacaoVenda).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                    
+                    const timestamp = new Date(cotacao.dataHoraCotacao);
+                    document.getElementById('moeda-data').textContent = timestamp.toLocaleString('pt-BR');
+                    
+                    cotacaoDisplay.classList.remove('hidden');
+                    erroMensagem.classList.add('hidden');
+                } else {
+                    cotacaoDisplay.classList.add('hidden');
+                    erroMensagem.classList.remove('hidden');
+                    erroMensagem.querySelector('p').textContent = 'Cotação não encontrada para esta data. Tente outra moeda.';
+                }
+
+            } catch (error) {
+                console.error("Erro ao buscar cotação:", error);
+                cotacaoDisplay.classList.add('hidden');
+                erroMensagem.classList.remove('hidden');
+                erroMensagem.querySelector('p').textContent = 'Houve um erro ao buscar a cotação. Tente novamente mais tarde.';
+            }
+        }
+
+        // Adiciona o evento de mudança ao select
+        selectMoeda.addEventListener('change', (event) => {
+            const simboloMoeda = event.target.value;
+            if (simboloMoeda) {
+                exibirCotacao(simboloMoeda);
+            }
+        });
+        
+        // Carrega a lista de moedas quando a página é carregada
+        carregarMoedas();
+    });
+</script>
+{% endblock %}

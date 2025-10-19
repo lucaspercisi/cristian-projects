@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Financeiro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .financeiro-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .financeiro-section {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .add-button {
+            padding: 8px 16px;
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-button:hover {
+            background-color: #4a90e2;
+        }
+
+        .financeiro-list {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .financeiro-list th, .financeiro-list td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .financeiro-list th {
+            background-color: #f8f8f8;
+            font-weight: 600;
+        }
+
+        .financeiro-list tr:hover {
+            background-color: #f4f4f4;
+        }
+
+        .back-link {
+            display: block;
+            text-align: left;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .form-container {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .form-section-group {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+
+        .form-section-group h4 {
+            margin-top: 0;
+            color: #555;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .form-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .form-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-actions .submit-btn {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .form-actions .cancel-btn {
+            background-color: #ccc;
+            color: #333;
+        }
+        
+        @media (min-width: 992px) {
+            .financeiro-layout {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .financeiro-section {
+                flex: 1;
+                margin-right: 20px;
+            }
+
+            .financeiro-section:last-child {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container general-form-container">
+        <a href="{{ url_for('dashboard') }}" class="back-link">&larr; Voltar para o Dashboard</a>
+        <h2 class="title">Controle Financeiro</h2>
+
+        <div class="financeiro-layout">
+            <!-- Seção de Contas a Receber -->
+            <div class="financeiro-section">
+                <div class="section-header">
+                    <h3>Contas a Receber</h3>
+                    <button class="add-button" onclick="toggleForm('form-receber')">Adicionar</button>
+                </div>
+                
+                <div id="form-receber" class="form-container">
+                    <form action="#" method="post">
+                        <div class="form-section-group">
+                            <h4>Dados do Lançamento</h4>
+                            <div class="form-grid">
+                                <div class="input-group">
+                                    <label for="num_lancamento_rec">Número do Lançamento</label>
+                                    <input type="text" id="num_lancamento_rec" name="num_lancamento_rec">
+                                </div>
+                                <div class="input-group">
+                                    <label for="cod_cliente">Código do Cliente</label>
+                                    <input type="text" id="cod_cliente" name="cod_cliente">
+                                </div>
+                                <div class="input-group">
+                                    <label for="data_lancamento_rec">Data do Lançamento</label>
+                                    <input type="date" id="data_lancamento_rec" name="data_lancamento_rec">
+                                </div>
+                                <div class="input-group">
+                                    <label for="data_emissao_rec">Data da Emissão</label>
+                                    <input type="date" id="data_emissao_rec" name="data_emissao_rec">
+                                </div>
+                                <div class="input-group">
+                                    <label for="data_competencia_rec">Data de Competência</label>
+                                    <input type="date" id="data_competencia_rec" name="data_competencia_rec">
+                                </div>
+                                <div class="input-group">
+                                    <label for="meio_pagamento_rec">Meio de Pagamento</label>
+                                    <select id="meio_pagamento_rec" name="meio_pagamento_rec">
+                                        <option value="">Selecione</option>
+                                        <option value="boleto">Boleto</option>
+                                        <option value="cartao_credito">Cartão de Crédito</option>
+                                        <option value="pix">Pix</option>
+                                        <option value="transferencia">Transferência</option>
+                                        <option value="dinheiro">Dinheiro</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label for="vendedor_rec">Vendedor</label>
+                                    <input type="text" id="vendedor_rec" name="vendedor_rec">
+                                </div>
+                                <div class="input-group">
+                                    <label for="valor_rec">Valor</label>
+                                    <input type="number" step="0.01" id="valor_rec" name="valor_rec">
+                                </div>
+                                <div class="input-group">
+                                    <label for="referente_rec">Referente</label>
+                                    <input type="text" id="referente_rec" name="referente_rec">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section-group">
+                            <h4>Informações Fiscais</h4>
+                            <div class="form-grid">
+                                <div class="input-group">
+                                    <label for="num_doc_fiscal_rec">Número do Documento Fiscal</label>
+                                    <input type="text" id="num_doc_fiscal_rec" name="num_doc_fiscal_rec">
+                                </div>
+                                <div class="input-group">
+                                    <label for="chave_nfe_rec">Chave NFe</label>
+                                    <input type="text" id="chave_nfe_rec" name="chave_nfe_rec">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section-group">
+                            <h4>Observações</h4>
+                            <div class="form-grid">
+                                <div class="input-group" style="grid-column: span 2;">
+                                    <label for="observacao_rec">Observação</label>
+                                    <textarea id="observacao_rec" name="observacao_rec" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="cancel-btn" onclick="toggleForm('form-receber')">Cancelar</button>
+                            <button type="submit" class="submit-btn">Salvar Lançamento</button>
+                        </div>
+                    </form>
+                </div>
+
+                <table class="financeiro-list">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Linhas de exemplo para contas a receber -->
+                        <tr>
+                            <td>15/08/2025</td>
+                            <td>Venda de produto A</td>
+                            <td>R$ 150,00</td>
+                            <td>Pendente</td>
+                        </tr>
+                        <tr>
+                            <td>10/08/2025</td>
+                            <td>Serviço de consultoria</td>
+                            <td>R$ 500,00</td>
+                            <td>Recebido</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Seção de Contas a Pagar -->
+            <div class="financeiro-section">
+                <div class="section-header">
+                    <h3>Contas a Pagar</h3>
+                    <button class="add-button" onclick="toggleForm('form-pagar')">Adicionar</button>
+                </div>
+
+                <div id="form-pagar" class="form-container">
+                    <form action="#" method="post">
+                        <div class="form-section-group">
+                            <h4>Dados do Lançamento</h4>
+                            <div class="form-grid">
+                                <div class="input-group">
+                                    <label for="num_lancamento_pag">Número do Lançamento</label>
+                                    <input type="text" id="num_lancamento_pag" name="num_lancamento_pag">
+                                </div>
+                                <div class="input-group">
+                                    <label for="cod_fornecedor">Código do Fornecedor</label>
+                                    <input type="text" id="cod_fornecedor" name="cod_fornecedor">
+                                </div>
+                                <div class="input-group">
+                                    <label for="num_doc_fiscal_pag">Número do Documento Fiscal</label>
+                                    <input type="text" id="num_doc_fiscal_pag" name="num_doc_fiscal_pag">
+                                </div>
+                                <div class="input-group">
+                                    <label for="data_lancamento_pag">Data do Lançamento</label>
+                                    <input type="date" id="data_lancamento_pag" name="data_lancamento_pag">
+                                </div>
+                                <div class="input-group">
+                                    <label for="data_emissao_pag">Data da Emissão</label>
+                                    <input type="date" id="data_emissao_pag" name="data_emissao_pag">
+                                </div>
+                                <div class="input-group">
+                                    <label for="data_competencia_pag">Data de Competência</label>
+                                    <input type="date" id="data_competencia_pag" name="data_competencia_pag">
+                                </div>
+                                <div class="input-group">
+                                    <label for="meio_pagamento_pag">Meio de Pagamento</label>
+                                    <select id="meio_pagamento_pag" name="meio_pagamento_pag">
+                                        <option value="">Selecione</option>
+                                        <option value="boleto">Boleto</option>
+                                        <option value="cartao_credito">Cartão de Crédito</option>
+                                        <option value="pix">Pix</option>
+                                        <option value="transferencia">Transferência</option>
+                                        <option value="dinheiro">Dinheiro</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label for="valor_pag">Valor</label>
+                                    <input type="number" step="0.01" id="valor_pag" name="valor_pag">
+                                </div>
+                                <div class="input-group">
+                                    <label for="referente_pag">Referente</label>
+                                    <input type="text" id="referente_pag" name="referente_pag">
+                                </div>
+                                <div class="input-group">
+                                    <label for="chave_nfe_pag">Chave NFe</label>
+                                    <input type="text" id="chave_nfe_pag" name="chave_nfe_pag">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section-group">
+                            <h4>Observações</h4>
+                            <div class="form-grid">
+                                <div class="input-group" style="grid-column: span 2;">
+                                    <label for="observacao_pag">Observação</label>
+                                    <textarea id="observacao_pag" name="observacao_pag" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="cancel-btn" onclick="toggleForm('form-pagar')">Cancelar</button>
+                            <button type="submit" class="submit-btn">Salvar Lançamento</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <table class="financeiro-list">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Linhas de exemplo para contas a pagar -->
+                        <tr>
+                            <td>20/08/2025</td>
+                            <td>Aluguel do escritório</td>
+                            <td>R$ 1.200,00</td>
+                            <td>Pendente</td>
+                        </tr>
+                        <tr>
+                            <td>12/08/2025</td>
+                            <td>Compra de insumos</td>
+                            <td>R$ 350,00</td>
+                            <td>Pago</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm(formId) {
+            const formContainer = document.getElementById(formId);
+            if (formContainer.style.display === "block") {
+                formContainer.style.display = "none";
+            } else {
+                formContainer.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

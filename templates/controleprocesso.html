@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% block title %}Controle de Processo{% endblock %}
+
+{% block page_title %}Controle de Processo{% endblock %}
+
+{% block content %}
+<div id="content-to-print" class="bg-white p-8 rounded-xl shadow-2xl transition-all duration-300">
+    <h2 class="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 border-indigo-600 pb-2">Controle de Processo</h2>
+    
+    <form action="#" method="POST" class="space-y-8">
+        
+        <div class="mb-6">
+            <label for="ref_geral" class="block text-xs font-medium text-gray-500 uppercase">REF. GERAL:</label>
+            <input type="text" id="ref_geral" name="ref_geral" class="mt-1 block w-full bg-yellow-100 border border-yellow-300 rounded-md p-2 text-sm focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500">
+        </div>
+
+        <div class="mb-6">
+            <label for="mensagem_cliente" class="block text-sm font-medium text-gray-700">Mensagem para o Cliente:</label>
+            <textarea id="mensagem_cliente" name="mensagem_cliente" rows="3" class="mt-1 block w-full rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2 resize-y">Caro Cliente,</textarea>
+        </div>
+
+        <h3 class="text-xl font-bold text-gray-800 mb-4 bg-gray-100 border-t-2 border-b-2 border-blue-600 py-2 px-4">Dados do processo:</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+            
+            <div>
+                <div class="flex items-center mb-2">
+                    <label for="produto" class="w-1/3 text-sm font-medium text-gray-700">Produto:</label>
+                    <input type="text" id="produto" name="produto" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div class="flex items-center mb-2">
+                    <label for="ref_apaconex" class="w-1/3 text-sm font-medium text-gray-700">Ref. APACOMEX:</label>
+                    <input type="text" id="ref_apaconex" name="ref_apaconex" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div class="flex items-center mb-2">
+                    <label for="ref_logistica" class="w-1/3 text-sm font-medium text-gray-700">Ref. Logística:</label>
+                    <input type="text" id="ref_logistica" name="ref_logistica" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div class="flex items-center mb-2">
+                    <label for="exportador" class="w-1/3 text-sm font-medium text-gray-700">Exportador:</label>
+                    <input type="text" id="exportador" name="exportador" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div class="flex items-center mb-2">
+                    <label for="adquirente_notify" class="w-1/3 text-sm font-medium text-gray-700">Adquirente/Notify:</label>
+                    <input type="text" id="adquirente_notify" name="adquirente_notify" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div class="flex items-center mb-2">
+                    <label for="origem" class="w-1/3 text-sm font-medium text-gray-700">Origem:</label>
+                    <input type="text" id="origem" name="origem" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div class="flex items-center mb-2">
+                    <label for="destino" class="w-1/3 text-sm font-medium text-gray-700">Destino:</label>
+                    <input type="text" id="destino" name="destino" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div class="flex items-center mb-2">
+                    <label for="incoterm" class="w-1/3 text-sm font-medium text-gray-700">Incoterm:</label>
+                    <input type="text" id="incoterm" name="incoterm" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+            </div>
+
+            <div>
+                <div class="flex items-center mb-2">
+                    <label for="consignee" class="w-1/3 text-sm font-medium text-gray-700">Consignee:</label>
+                    <input type="text" id="consignee" name="consignee" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div class="flex items-center mb-2">
+                    <label for="volume" class="w-1/3 text-sm font-medium text-gray-700">Volume:</label>
+                    <input type="text" id="volume" name="volume" value="a confirmar" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div class="flex items-center mb-2">
+                    <label for="peso_bruto" class="w-1/3 text-sm font-medium text-gray-700">Peso bruto:</label>
+                    <input type="text" id="peso_bruto" name="peso_bruto" value="a confirmar" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div class="flex items-center mb-2">
+                    <label for="cubagem_dimensoes" class="w-1/3 text-sm font-medium text-gray-700">Cubagem/dimensões:</label>
+                    <input type="text" id="cubagem_dimensoes" name="cubagem_dimensoes" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div class="flex items-center mb-2">
+                    <label for="seguro" class="w-1/3 text-sm font-medium text-gray-700">Seguro:</label>
+                    <input type="text" id="seguro" name="seguro" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div class="flex items-center mb-2">
+                    <label for="navio" class="w-1/3 text-sm font-medium text-gray-700">Navio:</label>
+                    <input type="text" id="navio" name="navio" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+                <div class="flex items-center mb-2">
+                    <label for="booking" class="w-1/3 text-sm font-medium text-gray-700">Booking:</label>
+                    <input type="text" id="booking" name="booking" class="flex-1 rounded-md border-2 border-gray-300 shadow-sm focus:border-indigo-600 focus:ring-4 focus:ring-indigo-200 sm:text-sm p-2">
+                </div>
+            </div>
+        </div>
+
+        <h3 class="text-xl font-bold text-gray-800 mb-4 mt-8 bg-blue-100 border-t-2 border-b-2 border-blue-600 py-2 px-4">Informações Detalhadas</h3>
+        <div class="overflow-x-auto rounded-lg shadow-md">
+            <table class="min-w-full leading-normal">
+                <thead>
+                    <tr class="bg-blue-600 text-white uppercase text-sm">
+                        <th class="py-3 px-6 text-left w-1/4">Data</th>
+                        <th class="py-3 px-6 text-left w-3/4">Informação</th>
+                        <th class="py-3 px-6 text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700 text-sm" id="tabela-informacoes">
+                    <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-150">
+                        <td class="py-3 px-6 whitespace-nowrap">
+                            <input type="date" name="data_0" class="block w-full border-0 bg-transparent focus:ring-0 p-1">
+                        </td>
+                        <td class="py-3 px-6">
+                            <input type="text" name="info_0" class="block w-full border-0 bg-transparent focus:ring-0 p-1">
+                        </td>
+                        <td class="py-3 px-6 text-center whitespace-now-rap">
+                            <button type="button" onclick="adicionarLinha()" class="text-green-500 hover:text-green-700 p-1 rounded-full hover:bg-green-100 transition-colors duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                            </button>
+                            <button type="button" onclick="excluirLinha(this)" class="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-100 transition-colors duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="flex justify-end space-x-4 mt-6 print:hidden">
+            <button type="button" onclick="window.location.href='{{ url_for('dashboard') }}';" class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-6 rounded-lg transition-colors duration-200 shadow-md">
+                Cancelar
+            </button>
+            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200 shadow-lg">
+                Salvar Processo
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+    let linhaIndex = 1;
+
+    function adicionarLinha() {
+        const tabela = document.getElementById('tabela-informacoes');
+        const novaLinha = document.createElement('tr');
+        novaLinha.className = 'border-b border-gray-200 hover:bg-gray-50 transition-colors duration-150';
+        
+        novaLinha.innerHTML = `
+            <td class="py-3 px-6 whitespace-nowrap">
+                <input type="date" name="data_${linhaIndex}" class="block w-full border-0 bg-transparent focus:ring-0 p-1">
+            </td>
+            <td class="py-3 px-6">
+                <input type="text" name="info_${linhaIndex}" class="block w-full border-0 bg-transparent focus:ring-0 p-1">
+            </td>
+            <td class="py-3 px-6 text-center whitespace-now-rap">
+                <button type="button" onclick="adicionarLinha()" class="text-green-500 hover:text-green-700 p-1 rounded-full hover:bg-green-100 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+                <button type="button" onclick="excluirLinha(this)" class="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-100 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                </button>
+            </td>
+        `;
+        tabela.appendChild(novaLinha);
+        linhaIndex++;
+    }
+
+    function excluirLinha(botao) {
+        const row = botao.closest('tr');
+        if (document.getElementById('tabela-informacoes').rows.length > 1) {
+            row.remove();
+        } else {
+            alert('Não é possível excluir a última linha.');
+        }
+    }
+
+    // Lógica para o menu de contexto (clique direito)
+    document.addEventListener('contextmenu', function(e) {
+        // Assegura que o menu de contexto só apareça dentro da área de impressão
+        if (!document.getElementById('content-to-print').contains(e.target)) {
+            return;
+        }
+        
+        e.preventDefault();
+        
+        const contextMenu = document.createElement('div');
+        contextMenu.className = 'absolute z-50 bg-white shadow-lg rounded-md border border-gray-200 text-sm py-2';
+        contextMenu.style.top = `${e.clientY}px`;
+        contextMenu.style.left = `${e.clientX}px`;
+        contextMenu.innerHTML = `
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100" id="gerar-pdf">Gerar PDF da Tela</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-100 text-gray-400 cursor-not-allowed" id="enviar-email" disabled>Enviar por E-mail (Não implementado)</a>
+        `;
+        
+        document.body.appendChild(contextMenu);
+
+        document.addEventListener('click', function handler() {
+            contextMenu.remove();
+            document.removeEventListener('click', handler);
+        });
+
+        // Evento de clique no item "Gerar PDF"
+        document.getElementById('gerar-pdf').addEventListener('click', function(e) {
+            e.preventDefault();
+            const element = document.getElementById('content-to-print');
+            
+            // Corrige a sobreposição para impressão: remove sombra e adiciona margens
+            element.classList.add('print-mode');
+            
+            html2pdf(element, {
+                margin: 0.1, // Margem reduzida para começar no topo
+                filename: 'controle_processo.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            }).then(() => {
+                // Remove a classe de correção após a geração
+                element.classList.remove('print-mode');
+            });
+        });
+    });
+</script>
+
+<style>
+    /* Estilos específicos para a visualização de impressão */
+    @media print {
+        body {
+            /* Oculta o menu lateral e outros elementos não essenciais */
+            -webkit-print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+
+        .print-mode {
+            /* Remove a sombra e a cor de fundo para otimizar a impressão */
+            box-shadow: none !important;
+            background-color: transparent !important;
+            border-radius: 0 !important;
+            
+            /* Adiciona uma classe para reduzir o tamanho da fonte */
+            font-size: 0.7em !important; 
+        }
+
+        .print-mode h2, .print-mode h3 {
+            font-size: 1.2em !important;
+        }
+        
+        .print-mode input, .print-mode textarea {
+            /* Adiciona uma borda para que os campos fiquem visíveis na impressão */
+            border: 1px solid #ccc !important;
+            background-color: #fff !important;
+            font-size: 0.8em !important;
+        }
+
+        .print-mode table {
+            font-size: 0.8em !important;
+        }
+
+        /* Oculta os botões de ação na tabela e no rodapé na impressão */
+        .print-mode button, .print:hidden {
+            display: none !important;
+        }
+
+        /* Corrige sobreposição do grid */
+        .print-mode .grid {
+            display: block;
+        }
+
+        .print-mode .grid > * {
+            margin-bottom: 0.5rem;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,204 @@
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+import psycopg2
+import psycopg2.extras
+from datetime import date
+
+app = Flask(__name__)
+app.secret_key = 'sua_chave_secreta_aqui'
+
+# --- Configuração do Banco de Dados PostgreSQL ---
+def get_pg_connection():
+    """Função para conectar ao banco de dados PostgreSQL."""
+    try:
+        conn = psycopg2.connect(
+            dbname="sistema_login",
+            user="postgres",
+            password="postgres",
+            host="localhost",
+            port="5432"
+        )
+        return conn
+    except psycopg2.OperationalError as e:
+        print(f"Erro ao conectar ao PostgreSQL: {e}")
+        return None
+
+# --- Rotas Principais da Aplicação ---
+
+@app.route('/')
+def index():
+    return redirect(url_for('dashboard'))
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
+# --- Cadastro Geral (Pessoas) ---
+
+@app.route('/cadastrar_geral', methods=['GET', 'POST'])
+def cadastrar_geral():
+    sucesso = None
+    erro = None
+    proximo_codigo = 1
+    
+    conn = get_pg_connection()
+    if not conn:
+        erro = "Erro: Não foi possível conectar ao banco de dados. Verifique a conexão."
+        return render_template('cadastro_geral.html', sucesso=sucesso, erro=erro, proximo_codigo=proximo_codigo)
+
+    try:
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cursor:
+            if request.method == 'POST':
+                # Coleta de dados do formulário
+                codigo_cadastro = request.form.get('codigo_cadastro')
+                tipo = request.form.get('tipo')
+                tipo_classificacao = request.form.get('tipo_classificacao')
+                cpf_cnpj = request.form.get('cpf_cnpj')
+                nome_completo = request.form.get('nome_completo')
+                razao_social = request.form.get('razao_social')
+                nome_fantasia = request.form.get('nome_fantasia')
+                contribuinte = request.form.get('contribuinte')
+                logradouro = request.form.get('logradouro')
+                numero = request.form.get('numero')
+                letra = request.form.get('letra')
+                complemento = request.form.get('complemento')
+                bairro = request.form.get('bairro')
+                cidade = request.form.get('cidade')
+                cep = request.form.get('cep')
+                nome_contato = request.form.get('nome_contato')
+                telefone_fixo = request.form.get('telefone_fixo')
+                telefone_celular = request.form.get('telefone_celular')
+                email = request.form.get('email')
+                cargo = request.form.get('cargo')
+                comissoes = request.form.get('comissoes') if request.form.get('comissoes') else None
+
+                # Verifica se é uma atualização ou inserção
+                cursor.execute("SELECT * FROM pessoas WHERE codigo_cadastro = %s", (codigo_cadastro,))
+                existe = cursor.fetchone()
+
+                if existe:
+                    # Lógica de UPDATE
+                    query = """
+                        UPDATE pessoas SET tipo=%s, tipo_classificacao=%s, cpf_cnpj=%s, nome_completo=%s, 
+                        razao_social=%s, nome_fantasia=%s, contribuinte=%s, logradouro=%s, numero=%s, 
+                        letra=%s, complemento=%s, bairro=%s, cidade=%s, cep=%s, nome_contato=%s, 
+                        telefone_fixo=%s, telefone_celular=%s, email=%s, cargo=%s, comissoes=%s
+                        WHERE codigo_cadastro = %s
+                    """
+                    cursor.execute(query, (tipo, tipo_classificacao, cpf_cnpj, nome_completo, razao_social, 
+                                           nome_fantasia, contribuinte, logradouro, numero, letra, complemento, 
+                                           bairro, cidade, cep, nome_contato, telefone_fixo, telefone_celular, 
+                                           email, cargo, comissoes, codigo_cadastro))
+                    sucesso = "Cadastro atualizado com sucesso!"
+                else:
+                    # Lógica de INSERT
+                    query = """
+                        INSERT INTO pessoas (codigo_cadastro, tipo, tipo_classificacao, cpf_cnpj, nome_completo, 
+                        razao_social, nome_fantasia, contribuinte, logradouro, numero, letra, complemento, 
+                        bairro, cidade, cep, nome_contato, telefone_fixo, telefone_celular, email, cargo, comissoes)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """
+                    cursor.execute(query, (codigo_cadastro, tipo, tipo_classificacao, cpf_cnpj, nome_completo, razao_social, nome_fantasia, contribuinte, logradouro, numero, letra, complemento, bairro, cidade, cep, nome_contato, telefone_fixo, telefone_celular, email, cargo, comissoes))
+                    sucesso = "Pessoa cadastrada com sucesso!"
+                
+                conn.commit()
+
+                # Lógica para obter o próximo código para o GET e após o POST
+                cursor.execute("SELECT MAX(codigo_cadastro) FROM pessoas")
+                max_id_result = cursor.fetchone()
+                max_id = max_id_result[0] if max_id_result and max_id_result[0] is not None else 0
+                proximo_codigo = int(max_id) + 1
+
+    except psycopg2.Error as e:
+        if conn:
+            conn.rollback()
+        erro = f"Erro no banco de dados: {e}"
+        print(erro)
+    finally:
+        if conn:
+            conn.close()
+
+    return render_template('cadastro_geral.html', sucesso=sucesso, erro=erro, proximo_codigo=proximo_codigo)
+
+# --- Nova Rota de Cadastro de Produtos ---
+@app.route('/cadastrar_produtos', methods=['GET', 'POST'])
+def cadastrar_produtos():
+    sucesso = None
+    erro = None
+    conn = get_pg_connection()
+
+    if not conn:
+        erro = "Erro: Não foi possível conectar ao banco de dados. Verifique a conexão."
+        return render_template('cadastro_produtos.html', sucesso=sucesso, erro=erro)
+
+    if request.method == 'POST':
+        try:
+            with conn.cursor() as cursor:
+                # Coleta e trata os dados do formulário
+                nome = request.form['nome']
+                codigo_barras = request.form.get('codigo_barras')
+                codigo_exportacao = request.form.get('codigo_exportacao')
+                codigo_importacao = request.form.get('codigo_importacao')
+                origem_internacional = 'origem_internacional' in request.form
+                descricao = request.form.get('descricao')
+
+                # Tratamento de campos numéricos para evitar erros
+                preco_custo = request.form.get('preco_custo') or None
+                preco_venda = request.form.get('preco_venda') or None
+                quantidade_estoque = request.form.get('quantidade_estoque') or 0
+
+                # Converte os valores para os tipos corretos
+                preco_custo = float(preco_custo) if preco_custo else None
+                preco_venda = float(preco_venda) if preco_venda else None
+                quantidade_estoque = int(quantidade_estoque) if quantidade_estoque else 0
+
+                # Query para inserção de dados
+                query = """
+                    INSERT INTO produtos (nome, codigo_barras, codigo_exportacao, codigo_importacao, origem_internacional, descricao, preco_custo, preco_venda, quantidade_estoque)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """
+                cursor.execute(query, (nome, codigo_barras, codigo_exportacao, codigo_importacao, origem_internacional, descricao, preco_custo, preco_venda, quantidade_estoque))
+                conn.commit()
+                sucesso = "Produto cadastrado com sucesso!"
+        except (psycopg2.Error, ValueError) as e:
+            if conn:
+                conn.rollback()
+            erro = f"Erro no banco de dados ou nos dados do formulário: {e}"
+        finally:
+            if conn:
+                conn.close()
+    
+    return render_template('cadastro_produtos.html', sucesso=sucesso, erro=erro)
+
+# --- Outras Rotas ---
+@app.route('/cadastrar_servicos', methods=['GET', 'POST'])
+def cadastrar_servicos():
+    return render_template('cadastro_servicos.html')
+
+@app.route('/contas_a_receber')
+def contas_a_receber():
+    return render_template('contas.html', tipo='receber')
+
+@app.route('/contas_a_pagar')
+def contas_a_pagar():
+    return render_template('contas.html', tipo='pagar')
+
+@app.route('/financeiro')
+def financeiro():
+    return render_template('financeiro.html')
+    
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/perfil')
+def perfil():
+    return render_template('perfil.html')
+
+@app.route('/logout')
+def logout():
+    """Rota para fazer logout do usuário.
+    Atualmente, apenas redireciona para a página de login."""
+    return redirect(url_for('login'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
